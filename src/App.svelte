@@ -67,30 +67,30 @@
 		}
 	}
 
-	import { createClient } from '@openai/api';
+	// import { createClient } from '@openai/api';
 
 	async function gradeAnswerWithAI(answer) {
-		const client = createClient({ apiKey: 'your_openai_api_key_here' });
-		const questionPrompt = `Based on the question: "${currentQuestion.question}", how well does the answer "${answer}" align on a scale from 0 to 3? 0 means not at all, 1 means slightly, 2 means moderately, and 3 means perfectly.`;
-		try {
-			const response = await client.createCompletion({
-				model: 'text-davinci-003',
-				prompt: questionPrompt,
-				temperature: 0.7,
-				max_tokens: 60,
-				top_p: 1.0,
-				frequency_penalty: 0.0,
-				presence_penalty: 0.0,
-			});
-			const score = parseInt(response.choices[0].text.trim());
-			return {
-				numberOfPoints: score,
-				questionNumberAnsweredCorrectly: score > 0 ? 1 : 0
-			};
-		} catch (error) {
-			console.error('Error grading answer with AI:', error);
-			// Fallback to a default score in case of an error
-			return { numberOfPoints: 0, questionNumberAnsweredCorrectly: 0 };
+		// const client = createClient({ apiKey: 'your_openai_api_key_here' });
+		// const questionPrompt = `Based on the question: "${currentQuestion.question}", how well does the answer "${answer}" align on a scale from 0 to 3? 0 means not at all, 1 means slightly, 2 means moderately, and 3 means perfectly.`;
+		// try {
+		// 	const response = await client.createCompletion({
+		// 		model: 'text-davinci-003',
+		// 		prompt: questionPrompt,
+		// 		temperature: 0.7,
+		// 		max_tokens: 60,
+		// 		top_p: 1.0,
+		// 		frequency_penalty: 0.0,
+		// 		presence_penalty: 0.0,
+		// 	});
+		// 	const score = parseInt(response.choices[0].text.trim());
+		// 	return {
+		// 		numberOfPoints: score,
+		// 		questionNumberAnsweredCorrectly: score > 0 ? 1 : 0
+		// 	};
+		// } catch (error) {
+		// 	console.error('Error grading answer with AI:', error);
+		// 	// Fallback to a default score in case of an error
+		// 	return { numberOfPoints: 0, questionNumberAnsweredCorrectly: 0 };
 		}
 	}
 

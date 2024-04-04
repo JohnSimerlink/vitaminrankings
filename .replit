@@ -1,0 +1,23 @@
+modules = ["svelte-kit-node-20:v1-20230724-46059dd"]
+run = "npm run dev"
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+deploymentTarget = "static"
+publicDir = "build"
+run = ["sh", "-c", "npm run start"]
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+exposeLocalhost = true
+
+[[ports]]
+localPort = 9000
+externalPort = 9000
+
+[[ports]]
+localPort = 35729
+externalPort = 3000
