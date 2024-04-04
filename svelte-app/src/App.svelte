@@ -6,24 +6,66 @@
 	let currentQuestionIndex = 0;
 	let currentQuestion = {};
 	let today;
+	let selectedDay;
+	let previousDay;
+	let nextDay;
 	let scoring = {}; // Initialize scoring hashmap
+
+	function calculateAdjacentDays() {
+		console.log('calculateAdjacentDays')
+		if (!selectedDay) return;
+		const todayDate = new Date(selectedDay); // Use selectedDay instead of today
+		console.log('selectedDay', selectedDay)
+		const previousDate = new Date(todayDate);
+		console.log('previousDate', previousDate.toISOString());
+		previousDate.setDate(previousDate.getDate() - 1);
+		console.log('previousDate', previousDate.toISOString());
+		console.log('previousDate', previousDate.toISOString());
+		console.log('previousDate', previousDate.toISOString());
+		console.log('previousDate', previousDate.toISOString());
+		console.log('previousDate', previousDate.toISOString());
+		previousDay = previousDate.toISOString().slice(0, 10);
+
+		const nextDate = new Date(todayDate);
+		nextDate.setDate(nextDate.getDate() + 1);
+		nextDay = nextDate.toISOString().slice(0, 10);
+	}
+
+	function loadQuestionsForDate(date) {
+		todayQuestions = questions[date] || [];
+		if (todayQuestions.length > 0) {
+			currentQuestionIndex = 0;
+			currentQuestion = todayQuestions[currentQuestionIndex];
+			scoring = {}; // Reset scoring for new day
+			todayQuestions.forEach((_, index) => scoring[index] = undefined);
+		}
+	}
 
 	onMount(() => {
 		today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
-		console.log('today is ', today);
-		todayQuestions = questions[today] || [];
-		if (todayQuestions.length > 0) {
-			currentQuestion = todayQuestions[currentQuestionIndex];
-			// Initialize scoring for each question with 0
-			todayQuestions.forEach((_, index) => scoring[index] = undefined);
-		}
+		selectedDay = today;
+		calculateAdjacentDays();
+		loadQuestionsForDate(selectedDay);
 	});
+
+	$: selectedDay, calculateAdjacentDays(); // Recalculate adjacent days when selectedDay changes
+
 	export let name;
 	import Progress from './Progress.svelte';
 	let questionsCorrect = 0;
 	let totalQuestions = todayQuestions.length;
 	let pointsEarned = 0;
 	let answerInput = '';
+
+	function changeDay(offset) {
+		const newDay = new Date(selectedDay); // Use selectedDay instead of today
+		newDay.setDate(newDay.getDate() + offset);
+		const newDayStr = newDay.toISOString().slice(0, 10);
+		if (questions[newDayStr]) {
+			selectedDay = newDayStr; // Update selectedDay instead of today
+			loadQuestionsForDate(selectedDay);
+		}
+	}
 
 	async function _gradeAnswer(answer) {
 		// Simulate grading answer
@@ -50,7 +92,20 @@
 </script>
 
 <main>
-	<div class='title'>Healthle - {today}</div>
+	<div class='title'>
+		<div>
+			{#if questions[previousDay]}
+				<button on:click={() => changeDay(-1)}>←</button>
+			{/if}
+			{selectedDay}
+			{#if questions[nextDay]}
+				<button on:click={() => changeDay(1)}>→</button>
+			{/if}
+		</div>
+		<div>
+			Healthle
+		</div>
+	</div>
 	<div class="quiz">
 		{#if todayQuestions.length === 0}
 			<h1>No questions available today</h1>
