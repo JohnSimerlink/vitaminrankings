@@ -5,13 +5,17 @@
 	let todayQuestions = [];
 	let currentQuestionIndex = 0;
 	let currentQuestion = {};
+	let today;
+	let scoring = {}; // Initialize scoring hashmap
 
 	onMount(() => {
-		const today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
-		console.log('today is ', today)
+		today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
+		console.log('today is ', today);
 		todayQuestions = questions[today] || [];
 		if (todayQuestions.length > 0) {
 			currentQuestion = todayQuestions[currentQuestionIndex];
+			// Initialize scoring for each question with 0
+			todayQuestions.forEach((_, index) => scoring[index] = undefined);
 		}
 	});
 	export let name;
@@ -34,6 +38,8 @@
 		_gradeAnswer(answerInput).then(({numberOfPoints, questionNumberAnsweredCorrectly}) => {
 			pointsEarned += numberOfPoints;
 			questionsCorrect += questionNumberAnsweredCorrectly;
+			// Update scoring based on the answer correctness
+			scoring[currentQuestionIndex] = questionNumberAnsweredCorrectly ? 3 : 0;
 			answerInput = ''; // Reset input after grading
 			if (currentQuestionIndex < todayQuestions.length - 1) {
 				currentQuestionIndex++;
@@ -44,6 +50,7 @@
 </script>
 
 <main>
+	<div class='title'>Healthle - {today}</div>
 	<div class="quiz">
 		{#if todayQuestions.length === 0}
 			<h1>No questions available today</h1>
@@ -58,7 +65,7 @@
 			<button type="submit">Submit</button>
 		</form>
 		<div class="progress-container">
-			<Progress numerator={questionsCorrect} denominator={todayQuestions.length} />
+			<Progress scoring={scoring} />
 		</div>
 		<!-- Display the points earned -->
 		<div class="points-earned">
