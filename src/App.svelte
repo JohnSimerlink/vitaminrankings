@@ -91,7 +91,7 @@
 		// 	console.error('Error grading answer with AI:', error);
 		// 	// Fallback to a default score in case of an error
 		// 	return { numberOfPoints: 0, questionNumberAnsweredCorrectly: 0 };
-		}
+		// }
 	}
 
 	function gradeAnswer() {

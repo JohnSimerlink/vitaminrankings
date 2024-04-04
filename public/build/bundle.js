@@ -778,7 +778,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "←";
-    			add_location(button, file, 115, 4, 3914);
+    			add_location(button, file, 115, 4, 3980);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -817,7 +817,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "→";
-    			add_location(button, file, 119, 4, 4022);
+    			add_location(button, file, 119, 4, 4088);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -855,7 +855,7 @@ var app = (function () {
     			h1 = element("h1");
     			h1.textContent = "No questions available today";
     			attr_dev(h1, "class", "svelte-a5mqdz");
-    			add_location(h1, file, 128, 3, 4185);
+    			add_location(h1, file, 128, 3, 4251);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
@@ -888,9 +888,9 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			t = text(t_value);
-    			add_location(p, file, 132, 4, 4303);
+    			add_location(p, file, 132, 4, 4369);
     			attr_dev(div, "class", "current-question");
-    			add_location(div, file, 131, 3, 4268);
+    			add_location(div, file, 131, 3, 4334);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -984,24 +984,24 @@ var app = (function () {
     			div4 = element("div");
     			t12 = text("Points Earned: ");
     			t13 = text(/*pointsEarned*/ ctx[6]);
-    			add_location(div0, file, 113, 2, 3872);
-    			add_location(div1, file, 122, 2, 4091);
+    			add_location(div0, file, 113, 2, 3938);
+    			add_location(div1, file, 122, 2, 4157);
     			attr_dev(div2, "class", "title");
-    			add_location(div2, file, 112, 1, 3850);
+    			add_location(div2, file, 112, 1, 3916);
     			attr_dev(input, "type", "text");
     			attr_dev(input, "placeholder", "Enter your Answer here");
-    			add_location(input, file, 136, 3, 4406);
+    			add_location(input, file, 136, 3, 4472);
     			attr_dev(button, "type", "submit");
-    			add_location(button, file, 137, 3, 4493);
-    			add_location(form, file, 135, 2, 4357);
+    			add_location(button, file, 137, 3, 4559);
+    			add_location(form, file, 135, 2, 4423);
     			attr_dev(div3, "class", "progress-container svelte-a5mqdz");
-    			add_location(div3, file, 139, 2, 4543);
+    			add_location(div3, file, 139, 2, 4609);
     			attr_dev(div4, "class", "points-earned svelte-a5mqdz");
-    			add_location(div4, file, 143, 2, 4658);
+    			add_location(div4, file, 143, 2, 4724);
     			attr_dev(div5, "class", "quiz");
-    			add_location(div5, file, 126, 1, 4127);
+    			add_location(div5, file, 126, 1, 4193);
     			attr_dev(main, "class", "svelte-a5mqdz");
-    			add_location(main, file, 111, 0, 3842);
+    			add_location(main, file, 111, 0, 3908);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1140,6 +1140,11 @@ var app = (function () {
     	return block;
     }
 
+    async function gradeAnswerWithAI(answer) {
+    	
+    } // const client = createClient({ apiKey: 'your_openai_api_key_here' });
+    // const questionPrompt = `Based on the question: "${currentQuestion.question}", how well does the answer "${answer}" align on a scale from 0 to 3? 0 means not at all, 1 means slightly, 2 means moderately, and 3 means perfectly.`;
+
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
@@ -1206,39 +1211,26 @@ var app = (function () {
     		}
     	}
 
-    	// import { createClient } from '@openai/api';
-    	async function gradeAnswerWithAI(answer) {
-    		const client = createClient({ apiKey: 'your_openai_api_key_here' });
-    		const questionPrompt = `Based on the question: "${currentQuestion.question}", how well does the answer "${answer}" align on a scale from 0 to 3? 0 means not at all, 1 means slightly, 2 means moderately, and 3 means perfectly.`;
-
-    		try {
-    			const response = await client.createCompletion({
-    				model: 'text-davinci-003',
-    				prompt: questionPrompt,
-    				temperature: 0.7,
-    				max_tokens: 60,
-    				top_p: 1.0,
-    				frequency_penalty: 0.0,
-    				presence_penalty: 0.0
-    			});
-
-    			const score = parseInt(response.choices[0].text.trim());
-
-    			return {
-    				numberOfPoints: score,
-    				questionNumberAnsweredCorrectly: score > 0 ? 1 : 0
-    			};
-    		} catch(error) {
-    			console.error('Error grading answer with AI:', error);
-
-    			// Fallback to a default score in case of an error
-    			return {
-    				numberOfPoints: 0,
-    				questionNumberAnsweredCorrectly: 0
-    			};
-    		}
-    	}
-
+    	// try {
+    	// 	const response = await client.createCompletion({
+    	// 		model: 'text-davinci-003',
+    	// 		prompt: questionPrompt,
+    	// 		temperature: 0.7,
+    	// 		max_tokens: 60,
+    	// 		top_p: 1.0,
+    	// 		frequency_penalty: 0.0,
+    	// 		presence_penalty: 0.0,
+    	// 	});
+    	// 	const score = parseInt(response.choices[0].text.trim());
+    	// 	return {
+    	// 		numberOfPoints: score,
+    	// 		questionNumberAnsweredCorrectly: score > 0 ? 1 : 0
+    	// 	};
+    	// } catch (error) {
+    	// 	console.error('Error grading answer with AI:', error);
+    	// 	// Fallback to a default score in case of an error
+    	// 	return { numberOfPoints: 0, questionNumberAnsweredCorrectly: 0 };
+    	// }
     	function gradeAnswer() {
     		_gradeAnswer(answerInput).then(({ numberOfPoints, questionNumberAnsweredCorrectly }) => {
     			$$invalidate(6, pointsEarned += numberOfPoints);
