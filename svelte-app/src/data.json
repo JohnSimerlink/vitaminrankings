@@ -1,0 +1,54 @@
+{
+    "2024-Apr-04": [
+        {
+            "question": "What is the chemical name for Vitamin C?",
+            "answer": "Ascorbic Acid"
+        },
+        {
+            "question": "Which fruit is commonly mistaken for having the highest Vitamin C content per serving?",
+            "answer": "Oranges"
+        },
+        {
+            "question": "What is the primary function of Vitamin C in the human body?",
+            "answer": "Vitamin C is an antioxidant that is essential for the synthesis of collagen and the repair of tissues."
+        },
+        {
+            "question": "Can the human body synthesize Vitamin C?",
+            "answer": "No, humans must obtain Vitamin C from their diet or supplements."
+        },
+        {
+            "question": "What disease is caused by a severe Vitamin C deficiency?",
+            "answer": "Scurvy"
+        },
+        {
+            "question": "Besides citrus fruits, name a vegetable that is a high source of Vitamin C.",
+            "answer": "Bell peppers"
+        }
+    ],
+    "2024-Apr-05": [
+        {
+            "question": "What does GLP-1 stand for in the context of GLP-1 drugs like Ozempic?",
+            "answer": "Glucagon-like peptide-1"
+        },
+        {
+            "question": "What is the primary use of GLP-1 drugs such as Ozempic?",
+            "answer": "To lower blood sugar levels in type 2 diabetes"
+        },
+        {
+            "question": "How do GLP-1 drugs like Ozempic work in the body?",
+            "answer": "They mimic the GLP-1 hormone, which increases insulin production and decreases glucagon release"
+        },
+        {
+            "question": "Can GLP-1 drugs like Ozempic aid in weight loss?",
+            "answer": "Yes, they can promote weight loss by slowing gastric emptying and reducing appetite"
+        },
+        {
+            "question": "Is Ozempic used for type 1 diabetes treatment?",
+            "answer": "No, it is approved for type 2 diabetes, not type 1"
+        },
+        {
+            "question": "Add your custom question here",
+            "answer": "Add your custom answer here"
+        }
+    ]
+}
