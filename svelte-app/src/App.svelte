@@ -1,42 +1,64 @@
 <script>
+	import { onMount } from 'svelte';
+	import questions from './data.json';
+
+	let todayQuestions = [];
+	let currentQuestionIndex = 0;
+	let currentQuestion = {};
+
+	onMount(() => {
+		const today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
+		console.log('today is ', today)
+		todayQuestions = questions[today] || [];
+		if (todayQuestions.length > 0) {
+			currentQuestion = todayQuestions[currentQuestionIndex];
+		}
+	});
 	export let name;
 	import Progress from './Progress.svelte';
-	let questionsCorrect = 3;
-	let totalQuestions = 7;
-	let pointsEarned = 0; // Added to track the total points earned
-	let questionInput = '';
-	async function _gradeQuestion() {
-		console.log('_gradeQuestion')
-		return new Promise((resolve, reject) => {
-			console.log("about to resolve promise")
-			resolve({
-				numberOfPoints: 1,
-				questionNumberAnsweredCorrectly: 1
-			})
-		})
+	let questionsCorrect = 0;
+	let totalQuestions = todayQuestions.length;
+	let pointsEarned = 0;
+	let answerInput = '';
+
+	async function _gradeAnswer(answer) {
+		// Simulate grading answer
+		if (answer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
+			return { numberOfPoints: 1, questionNumberAnsweredCorrectly: 1 };
+		} else {
+			return { numberOfPoints: 0, questionNumberAnsweredCorrectly: 0 };
+		}
 	}
-	function gradeQuestion() {
-		console.log('gradeQuestion')
-		// Assuming gradeQuestion is an async function that returns a promise
-		// with the structure {numberOfPoints, questionNumberAnsweredCorrectly}
-		_gradeQuestion(questionInput).then(({numberOfPoints, questionNumberAnsweredCorrectly}) => {
-			console.log('gradeQuestion.then called')
-			// questionsCorrect += questionNumberAnsweredCorrectly;
-			// totalQuestions += numberOfPoints; // Assuming numberOfPoints represents the total questions attempted
-			pointsEarned += numberOfPoints; // Update pointsEarned based on correct answers
-			questionInput = ''; // Reset input after grading
+
+	function gradeAnswer() {
+		_gradeAnswer(answerInput).then(({numberOfPoints, questionNumberAnsweredCorrectly}) => {
+			pointsEarned += numberOfPoints;
+			questionsCorrect += questionNumberAnsweredCorrectly;
+			answerInput = ''; // Reset input after grading
+			if (currentQuestionIndex < todayQuestions.length - 1) {
+				currentQuestionIndex++;
+				currentQuestion = todayQuestions[currentQuestionIndex];
+			}
 		});
 	}
 </script>
 
 <main>
 	<div class="quiz">
-		<form on:submit|preventDefault={gradeQuestion}>
-			<input type="text" bind:value={questionInput} placeholder="Enter your question here" />
+		{#if todayQuestions.length === 0}
+			<h1>No questions available today</h1>
+		{/if}
+		{#if todayQuestions.length > 0}
+			<div class="current-question">
+				<p>{currentQuestion.question}</p>
+			</div>
+		{/if}
+		<form on:submit|preventDefault={gradeAnswer}>
+			<input type="text" bind:value={answerInput} placeholder="Enter your Answer here" />
 			<button type="submit">Submit</button>
 		</form>
 		<div class="progress-container">
-			<Progress numerator={questionsCorrect} denominator={totalQuestions} />
+			<Progress numerator={questionsCorrect} denominator={todayQuestions.length} />
 		</div>
 		<!-- Display the points earned -->
 		<div class="points-earned">
@@ -56,7 +78,7 @@
 	.progress-container, .points-earned {
 		display: flex;
 		justify-content: center;
-		margin-top: 1em; /* Added margin for spacing */
+		margin-top: 1em;
 	}
 
 	h1 {
